@@ -1,10 +1,25 @@
-
+function funct() {
+    var hid = document.getElementById("hid");
+    hid.setAttribute('value', this.event.target.tagName());
+    /**var name = document.getElementById("name");
+    name.setAttribute('value', );
+    var address = document.getElementById("address");
+    address.setAttribute('value', );
+    var phone = document.getElementById("phone");
+    phone.setAttribute('value', );*/
+    document.getElementById("Modal").style.display = "block";
+}
+var span = document.getElementById("span");
+span.onclick = function(){
+    document.getElementById("Modal").style.display = "none";
+}
 function initTable(object){
     var json = JSON.parse(object);
     for(var i = 0; i < json.LPU.length; i++){
         var table = document.getElementById("tab");
         var row = table.insertRow(i);
         row.setAttribute('name', json.LPU[i].id);
+        row.onclick = funct;
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
@@ -41,7 +56,3 @@ x.onload = function () {
     initTable(x.responseText);
 }
 x.send(null);
- document.getElementsByTagName("tr").click = function () {
-    alert(this);
-    document.getElementById("Modal").style.display = "block";
-}
