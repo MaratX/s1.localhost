@@ -31,13 +31,14 @@
 		<div class="modal-content">
 			<span id="span" class="close">&times;</span>
 			<hr>
-			<input type="text" id="hid"/></br>
-			<input type="text" id="name"></br>
-			<input type="text" id="address"></br>
-			<input type="text" id="phone"></br>
-			<input type="submit" id="update"></br>
-			<input type="submit" id="create"></br>
-			<input type="submit" id="delete"></br>
+			<input type="text" id="hid"/><label>hid</label></br>
+			<input type="text" id="name"><label>Наименование</label></br>
+			<input type="text" id="address"><label>Адрес</label></br>
+			<input type="text" id="phone"><label>Телефон</label></br>
+			<input type="button" id="update" value="Обновить" onclick="upd()">
+			<input type="button" id="create" value="Создать" onclick="crt()">
+			<input type="button" id="delete" value="Удалить" onclick="del()">
+			<input type="button" id="clear" value="Очистить" onclick="clr()">
 		</div>
 	</div>
 
