@@ -1,13 +1,17 @@
 var globalJson;
+
+document.getElementById("creater").onclick = function () {
+    document.getElementById("Modal").style.display = "block";
+}
 function funct() {
     var id = this.getAttribute('name');
     for(var i = 0; i < globalJson.LPU.length; i++){
-        if(id === globalJson.LPU[i].id){
+        if(id == globalJson.LPU[i].id){
             var hid = document.getElementById("hid");
             hid.setAttribute('name', globalJson.LPU[i].id);
             hid.setAttribute('value', globalJson.LPU[i].hid);
             var name = document.getElementById("name");
-            name.setAttribute('value', globalJson.LPU[i].name);
+            name.setAttribute('value', globalJson.LPU[i].full_name);
             var address = document.getElementById("address");
             address.setAttribute('value', globalJson.LPU[i].address);
             var phone = document.getElementById("phone");
@@ -15,8 +19,6 @@ function funct() {
             document.getElementById("Modal").style.display = "block";
         }
     }
-
-
 }
 
 var span = document.getElementById("span");
@@ -27,7 +29,10 @@ function initTable(object){
     globalJson = JSON.parse(object);
     init();
 }
+
 function init(){
+    document.getElementById("tab").innerHTML = "";
+
     for(var i = 0; i < globalJson.LPU.length; i++){
         var table = document.getElementById("tab");
         var row = table.insertRow(i);
@@ -61,7 +66,9 @@ function init(){
         }
 
     }
+
 }
+
 var x = new XMLHttpRequest();
 x.open("GET", "get.php?getlist=0", true);
 x.onload = function () {
@@ -70,31 +77,72 @@ x.onload = function () {
 x.send(null);
 
 function clr() {
-    document.getElementById("hid").setAttribute('name', "");
-    document.getElementById("hid").setAttribute('value', "");
-    document.getElementById("name").setAttribute('value', "");
-    document.getElementById("address").setAttribute('value', "");
-    document.getElementById("phone").setAttribute('value', "");
+    document.getElementById("hid").name = "";
+    document.getElementById("hid").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("address").value = "";
+    document.getElementById("phone").value = "";
 }
+
 function upd(){
-
+    var id = document.getElementById("hid").getAttribute("name");
+    for(var i =0; i < globalJson.LPU.length; i++){
+        if(globalJson.LPU[i].id == id){
+            globalJson.LPU[i].hid = document.getElementById("hid").value;
+            globalJson.LPU[i].full_name = document.getElementById("name").value;
+            globalJson.LPU[i].address = document.getElementById("address").value;
+            globalJson.LPU[i].phone = document.getElementById("phone").value;
+        }
+    }
+    _request_server();
+    fasad();
 }
-function crt() {
 
-}
+function crte() {
+    var maxID = 0;
+    for(var i =0; i < globalJson.LPU.length; i++){
+        if(maxID < globalJson.LPU[i].id){
+            maxID = globalJson.LPU[i].id;
+        }
+    }
+    var element = {};
+    element.id = maxID + 1;
+    element.hid = document.getElementById("hid").value;
+    element.full_name = document.getElementById("name").value;
+    element.address = document.getElementById("address").value;
+    element.phone = document.getElementById("phone").value;
+    globalJson.LPU.unshift(element);
+    fasad();
+};
+
 function del() {
     var idd = document.getElementById("hid").getAttribute("name");
     for(var i = 0; i < globalJson.LPU.length; i++){
         if(globalJson.LPU[i].id == idd){
-            delete globalJson.LPU[i];
+            globalJson.LPU.splice(i, 1);
         }
     }
-    crt();
-    init();
+    fasad();
+}
+
+function _request_server(){
+ var _request = new  XMLHttpRequest();
+ _request.open("GET", "jsonlist.php?" + "param=" + JSON.stringify(globalJson), true);
+ _request.send();
+ _request.onreadystatechange = function () {
+     if(this.readyState == 4){
+         if(this.status == 200){
+            alert(this.responseText);
+         }else {
+             alert('error');
+         }
+     }
+ };
 
 }
-//var tablet = document.getElementById("tab");
-//var trr = document.getElementsByTagName('tr');
-//trr.onclick = document.getElementById("Modal").style.display = "display";
-//document.getElementsByTagName('tr').addEventListener('click',function (e) {
-  //  document.getElementById("Modal").style.display = 
+
+function fasad(){
+    clr();
+    init();
+    document.getElementById("Modal").style.display = "none";
+}
